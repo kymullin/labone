@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------
     Project Lab 1 - Mini Motor Project
        Program by: Zachary Bonneau
-    Creation Date: 09/06/2023
+    Creation Date: 09/07/2023
      Program Name: PWM_OUT.v
     SubProgram of: PWM System
 
@@ -32,18 +32,14 @@ module PWM_OUT_Block(PWM_OUT, TCR, CCR, E, CLK);
     input [6:0] TCR;
     input [6:0] CCR; // from TCBlock and CCR
 
-    reg STATE = 0; // internal state machine
-
-    output PWM_OUT;
+    output reg PWM_OUT = 0;
 
     wire R; // internal signal from PWM_OUT_RESET
 
     PWM_OUT_RESET R0(R, TCR, CCR); // RESET combinational logic
 
-    assign PWM_OUT = STATE;
-
     always @(posedge CLK) begin
-        STATE = ~R & (STATE | E);
+        PWM_OUT = ~R & (PWM_OUT | E);
     end
 endmodule
 
