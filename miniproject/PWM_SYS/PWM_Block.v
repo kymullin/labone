@@ -6,9 +6,12 @@
     SubProgram of: PWM System
   
     Program Description:
-    PWM_Block.v integrates all of the subsystems of the PWM system. This will pull modules 
-    created and tested from CCR.v, TCR.v, PWM_OUT.v, and T-FF.v
-    Considering my lack of knowledge on proper 'include syntax, this will be accomplished via copy/paste 
+    PWM_Block.v integrates all of the subsystems of the PWM system. 
+    This will pull modules created and tested from CCR.v, 
+        TCR.v, PWM_OUT.v, and T-FF.v
+
+    Considering my lack of knowledge on proper 'include syntax, 
+        this will be accomplished via copy/paste 
 
     Inputs:
         SW [6:0] - 7-bit data input from onboard switches
@@ -76,8 +79,6 @@ module TCBlock(TCR, E, CLK);
     TFF_NEG T6(TCR[6], TCR[5]);
 
     always @(negedge TCR[6]) begin
-         //E = ~(TCR[0] | TCR[1] | TCR[2] | TCR[3] | TCR[4] | TCR[5] | TCR[6]);
-         //E = TCR[0] & TCR[1] & TCR[2] & TCR[3] & TCR[4] & TCR[5] & TCR[6];
          E = 1;
     end
 
@@ -138,7 +139,8 @@ module PWM_OUT_RESET(R, TCR, CCR);
 endmodule
 
 module testbench;
-    // Testbench - Configures/tests PWM_Block & creates waveform
+    // Testbench - Configures/tests PWM_Block
+    // & creates waveform
     reg CLK = 0;
     reg [6:0] Switches;
 
