@@ -46,7 +46,7 @@ module TFF_NEG(T, CLK);
     // negative edge TFF
     // copied from T-FF.v
     input CLK;
-    output reg T = 0;
+    output reg T = 1;
 
     always@(negedge CLK) begin
         // flip T on falling edge
@@ -56,9 +56,14 @@ endmodule
 
 module TCBlock(TCR, E, CLK);
     // Timer/Counter module - from TCR.v
+
+    // Logic Hazard Found during integration. To resolve this issue, 
+    // E becomes a SR-latch 
+        // S = negedge of TCR[6] (7F -> 00)
+        // R = posedge of TCR[0] (00 -> 01 & all other even -> odd)
     input CLK;
 
-    output E;
+    output reg E = 0;
     wire [6:0] T;
     output [6:0] TCR;
 
@@ -70,8 +75,15 @@ module TCBlock(TCR, E, CLK);
     TFF_NEG T5(TCR[5], TCR[4]);
     TFF_NEG T6(TCR[6], TCR[5]);
 
-    assign E = ~(TCR[0] | TCR[1] | TCR[2] | TCR[3] | TCR[4] | TCR[5] | TCR[6]);
-    
+    always @(negedge TCR[6]) begin
+         //E = ~(TCR[0] | TCR[1] | TCR[2] | TCR[3] | TCR[4] | TCR[5] | TCR[6]);
+         //E = TCR[0] & TCR[1] & TCR[2] & TCR[3] & TCR[4] & TCR[5] & TCR[6];
+         E = 1;
+    end
+
+    always @(posedge TCR[0]) begin
+        E = 0;
+    end
 endmodule
 
 module CCR (CCR_OUT, SW, E);
@@ -81,20 +93,20 @@ module CCR (CCR_OUT, SW, E);
     output reg [6:0] CCR_OUT = 0;   // to PWM_OUT block
 
     always@(posedge E) begin
-        // On rising edge of E, assign CCR_OUT = SW
-        #1;
-        CCR_OUT[0] <= E & SW[0] | ~E & CCR_OUT[0];
-        CCR_OUT[1] <= E & SW[1] | ~E & CCR_OUT[1];
-        CCR_OUT[2] <= E & SW[2] | ~E & CCR_OUT[2];
-        CCR_OUT[3] <= E & SW[3] | ~E & CCR_OUT[3];
-        CCR_OUT[4] <= E & SW[4] | ~E & CCR_OUT[4];
-        CCR_OUT[5] <= E & SW[5] | ~E & CCR_OUT[5];
-        CCR_OUT[6] <= E & SW[6] | ~E & CCR_OUT[6];
+        // On rising edge of E (posedge of clk), assign CCR_OUT = SW
+        CCR_OUT[0] <= SW[0];
+        CCR_OUT[1] <= SW[1];
+        CCR_OUT[2] <= SW[2];
+        CCR_OUT[3] <= SW[3];
+        CCR_OUT[4] <= SW[4];
+        CCR_OUT[5] <= SW[5];
+        CCR_OUT[6] <= SW[6];
     end
 endmodule 
 
 module PWM_OUT_Block(PWM_OUT, TCR, CCR, E, CLK);
     // PWM_OUT_Block contains SM for output control
+
     input E; // Enable signal from TCR (E = 1 when TCR = 0)
     input CLK;
     input [6:0] TCR;
@@ -107,7 +119,6 @@ module PWM_OUT_Block(PWM_OUT, TCR, CCR, E, CLK);
     PWM_OUT_RESET R0(R, TCR, CCR); // RESET combinational logic
 
     always @(posedge CLK) begin
-        #1;
         PWM_OUT = ~R & (PWM_OUT | E);
     end
 endmodule
@@ -145,6 +156,10 @@ module testbench;
         Switches = 7'b0000100; // SW = 4
         #6; Switches = 7'b0010001;
         #300;
+        Switches = 7'b0000000;
+        #270;
+        Switches = 7'b1111111;
+        #500;
         $finish;
     end
 
