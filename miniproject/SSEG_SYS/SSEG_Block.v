@@ -28,11 +28,9 @@
         SnsA_SSEG_DAT - SSEG config for Digit 2
 */
 
-`include "\Project_Lab_1\Mini_Motor\T-FF.v"
-
 module SSEG_Block(SSEG_Data, Anode1, Anode2, SW7, E, SnsA);
-    // SSEG_Block connects inputs, outputs, and internal signals within the 7 Segment Block
-    // see 7 Segment Block Diagram for details
+    // SSEG_Block connects inputs, outputs, and internal signals 
+    // within the 7 Segment Block. See 7 Segment Block Diagram for details
 
     input SnsA, E, SW7;
     output Anode1, Anode2;
@@ -49,8 +47,20 @@ module SSEG_Block(SSEG_Data, Anode1, Anode2, SW7, E, SnsA);
 
 endmodule
 
+module TFF_POS(T, CLK);
+    // positive edge TFF - Copied from T-FF.v
+    input CLK;
+    output reg T = 0;
+
+    always@(posedge CLK) begin
+        // flip T on rising edge
+        T = ~T;
+    end
+endmodule
+
 module ASEL(ASEL, Anode1, Anode2, CLK);
-    // ASEL contains a pos-edge T-FF that sets which anode/SSEG configuration to use
+    // ASEL contains a pos-edge T-FF that sets 
+    // which anode/SSEG configuration to use
     input CLK;
     output Anode1;
     output Anode2;
@@ -58,12 +68,13 @@ module ASEL(ASEL, Anode1, Anode2, CLK);
 
     TFF_POS FF0(ASEL, CLK);
 
-    assign Anode1 = ~ASEL;
-    assign Anode2 =  ASEL;
+    assign Anode1 =  ASEL;
+    assign Anode2 = ~ASEL;
 endmodule
 
 module SW7_Logic(SW7_SSEG_DAT, SW7);
-    // SW7_Logic reads SW7 and sends SSEG configuration to SSEG_MPX
+    // SW7_Logic reads SW7 and sends SSEG 
+    // configuration to SSEG_MPX
     // SW7_SSEG_DAT[0] = a, [6] = g
     input SW7;
     output [6:0] SW7_SSEG_DAT;
@@ -78,7 +89,8 @@ module SW7_Logic(SW7_SSEG_DAT, SW7);
 endmodule
 
 module SnsA_Logic(SnsA_SSEG_DAT, SnsA);
-    // SnsA_Logic reads SnsA and sends SSEG configuration to SSEG_MPX
+    // SnsA_Logic reads SnsA and sends SSEG 
+    // configuration to SSEG_MPX
     // SnsA_SSEG_DAT[0] = a, [6] = g
     input SnsA;
     output [6:0] SnsA_SSEG_DAT;
@@ -93,7 +105,8 @@ module SnsA_Logic(SnsA_SSEG_DAT, SnsA);
 endmodule
 
 module SSEG_MPX(SSEG_Data, SW7_SSEG_DAT, SnsA_SSEG_DAT, ASEL);
-    // SSEG_MPX is a simple multiplexer that selects which SSEG configuration to send
+    // SSEG_MPX is a simple multiplexer that selects 
+    // which SSEG configuration to send
     input [6:0] SW7_SSEG_DAT;
     input [6:0] SnsA_SSEG_DAT;
     input ASEL;
