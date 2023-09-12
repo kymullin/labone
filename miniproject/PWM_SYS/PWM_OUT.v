@@ -9,8 +9,8 @@
         
   
     Program Description:
-    PWM_OUT converts the internal PWM signals (TCR, CCR, etc.) and delivers the motor control
-    signal. 
+    PWM_OUT converts the internal PWM signals (TCR, CCR, etc.) 
+    and delivers the motor control signal. 
 
     Inputs:
         TCR [6:0] - TCR Data Register
@@ -53,7 +53,8 @@ module PWM_OUT_RESET(R, TCR, CCR);
     output R;
 
     assign R = ~(TCR[0] ^ CCR[0] | TCR[1] ^ CCR[1] | TCR[2] ^ CCR[2]
-               | TCR[3] ^ CCR[3] | TCR[4] ^ CCR[4] | TCR[5] ^ CCR[5] | TCR[6] ^ CCR[6]);
+               | TCR[3] ^ CCR[3] | TCR[4] ^ CCR[4] | TCR[5] ^ CCR[5] 
+               | TCR[6] ^ CCR[6]);
 endmodule
 
 module testbench;

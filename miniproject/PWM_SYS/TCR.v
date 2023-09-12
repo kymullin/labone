@@ -22,7 +22,7 @@
         E         - control output sent to CCR and PWM_OUT
 */
 
-`include "\Project_Lab_1\Mini_Motor\T-FF.v"
+`include "\miniproject\T-FF.v"
 
 module TCBlock(TCR, E, CLK);
     input CLK;
@@ -39,7 +39,8 @@ module TCBlock(TCR, E, CLK);
     TFF_NEG T5(TCR[5], TCR[4]);
     TFF_NEG T6(TCR[6], TCR[5]);
 
-    assign E = ~(TCR[0] | TCR[1] | TCR[2] | TCR[3] | TCR[4] | TCR[5] | TCR[6]);
+    assign E = ~(TCR[0] | TCR[1] | TCR[2] 
+      | TCR[3] | TCR[4] | TCR[5] | TCR[6]);
     
 endmodule
 
