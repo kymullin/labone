@@ -1,25 +1,13 @@
-**** module/scope: SSEG_Block
+**** module/scope: testbench
      Flip-Flops   : 0
      Logic Gates  : 0
-**** module/scope: SSEG_Block.FF0
-     Flip-Flops   : 0
-     Logic Gates  : 1
-**** module/scope: SSEG_Block.FF0.FF0
-     Flip-Flops   : 1
-     Logic Gates  : 1
      LOG[13]: 1 unaccounted
      LOG[14]: 1 unaccounted
-**** module/scope: SSEG_Block.L0
+**** module/scope: testbench.UUT
      Flip-Flops   : 0
-     Logic Gates  : 2
-**** module/scope: SSEG_Block.L1
-     Flip-Flops   : 0
-     Logic Gates  : 4
-**** module/scope: SSEG_Block.MPX0
-     Flip-Flops   : 0
-     Logic Gates  : 28
+     Logic Gates  : 3
 **** TOTALS
-     Flip-Flops   : 1
-     Logic Gates  : 36
+     Flip-Flops   : 0
+     Logic Gates  : 3
      LOG[13]: 1 unaccounted
      LOG[14]: 1 unaccounted

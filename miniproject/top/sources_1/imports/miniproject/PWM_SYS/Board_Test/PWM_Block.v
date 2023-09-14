@@ -60,24 +60,6 @@ endmodule
 
 module CLK_DIV(output CLK, input CLK_100MHz);
     // divides 100 MHz source clock to 48.8 kHz
-    //input CLK_100MHz;
-    //output CLK;
-    
-//    wire [10:0] T;
-
-//    TFF_NEG T0(T[0], CLK_100MHz);
-//    TFF_NEG T1(T[1], T[0]);
-//    TFF_NEG T2(T[2], T[1]);
-//    TFF_NEG T3(T[3], T[2]);
-//    TFF_NEG T4(T[4], T[3]);
-//    TFF_NEG T5(T[5], T[4]);
-//    TFF_NEG T6(T[6], T[5]);
-//    TFF_NEG T7(T[7], T[6]);
-//    TFF_NEG T8(T[8], T[7]);
-//    TFF_NEG T9(T[9], T[8]);
-//    TFF_NEG T10(T[10], T[9]);
-
-//    assign CLK = T[10];
 
     reg [10:0] clk_reg = 0;
     
@@ -89,38 +71,15 @@ module CLK_DIV(output CLK, input CLK_100MHz);
     
 endmodule
 
-module TFF_NEG(T, CLK);
-    // negative edge TFF
-    // copied from T-FF.v
-    input CLK;
-    output reg T = 1;
-
-    always@(negedge CLK) begin
-        // flip T on falling edge
-        T = ~T;
-    end
-endmodule
-
 module TCBlock(TCR, E, CLK);
     // Timer/Counter module - from TCR.v
 
     // Logic Hazard Found during integration. To resolve this issue, 
-    // E becomes a SR-latch 
-        // S = negedge of TCR[6] (7F -> 00)
-        // R = posedge of TCR[0] (00 -> 01 & all other even -> odd)
+    // E becomes a register
     input CLK;
 
     output reg E = 0;
-    //wire [6:0] T;
     output reg [6:0] TCR = 0;
-
-//    TFF_NEG T0(TCR[0], CLK);
-//    TFF_NEG T1(TCR[1], TCR[0]);
-//    TFF_NEG T2(TCR[2], TCR[1]);
-//    TFF_NEG T3(TCR[3], TCR[2]);
-//    TFF_NEG T4(TCR[4], TCR[3]);
-//    TFF_NEG T5(TCR[5], TCR[4]);
-//    TFF_NEG T6(TCR[6], TCR[5]);
 
     always @(negedge CLK) begin
         TCR <= TCR + 1;
@@ -128,18 +87,10 @@ module TCBlock(TCR, E, CLK);
     
     always @(negedge CLK) begin
         case(TCR)
-            127: E <= 1;
+            127: E <= 1; // E goes high right as TCR -> 0
             default: E <= 0;
         endcase
     end
-    
-//    always @(negedge TCR[6]) begin
-//         E = 1; #2; E = 0;
-//    end
-
-//    always @(posedge TCR[0]) begin
-//        E = 0;
-//    end
 endmodule
 
 module CCR (CCR_OUT, SW, E);
