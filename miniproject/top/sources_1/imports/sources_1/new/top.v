@@ -22,7 +22,7 @@
         SSEG [6:0]
         dp
         Anode [3:0]
-        Motor_Out [1:0]
+        Motor_Out [1:0] - 0 = Forward, 1 = Backward
         LED [7:0] - LED[i] = 1 when sw[i] = 1    
 
     Internal Signals
@@ -30,27 +30,32 @@
         PWM_OUT - from PWM.OUT_Block
         snsA    - from MotorControl
 */
-//`include "C:\Users\Zack\Mini-motor_Project\Mini-motor_Project.srcs\sources_1\imports\miniproject\PWM_SYS\Board_Test\PWM_Block.v"
-//`include "C:\Users\Zack\Mini-motor_Project\Mini-motor_Project.srcs\sources_1\imports\miniproject\SSEG_SYS\Board_Test\SSEG_Board.v"
 
-module top(Motor_Out, seg, dp, Anode, LED, sw, CLK_100MHz, SnsA);
-
-    input [7:0] sw;
-    input CLK_100MHz;
-    input SnsA; // simulated input as sw 15
+module top(
+    input [7:0] sw,
+    input CLK_100MHz,
+    input Over1, Under750,
     
-    output Motor_Out;
-    output [6:0] seg;
-    output dp;
-    output [3:0] Anode;
-    output [7:0] LED;
+    output [1:0] Motor_Out,
+    output EnableA,
+    output [6:0] seg,
+    output dp,
+    output [3:0] Anode,
+    output [7:0] LED
+    );
     
     wire E;
+    wire CLK;
+    wire PWM_OUT;
+    wire SnsA;
     
-    PWM_Block PWM0(Motor_Out, E, LED[6:0], sw[6:0], CLK_100MHz);
+    PWM_Block PWM0(PWM_OUT, E, LED[6:0], CLK, sw[6:0], CLK_100MHz);
     SSEG_Block SSEG0(seg, Anode, dp, sw[7], E, SnsA);
+    motorcontrol(Motor_Out[0], Motor_Out[1], SnsA, PWM_OUT, sw[7], Over1, Under750, CLK);
     
-    assign LED[7] = sw[7];   
+    assign LED[7] = sw[7];  
+    assign CLK_OUT = CLK; 
+    assign EnableA = 1; // motor always enabled
     
         
 endmodule

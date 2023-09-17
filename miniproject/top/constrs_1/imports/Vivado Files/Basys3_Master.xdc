@@ -39,8 +39,8 @@ set_property PACKAGE_PIN W13 [get_ports {sw[7]}]
 #	set_property IOSTANDARD LVCMOS33 [get_ports {sw[13]}]
 #set_property PACKAGE_PIN T1 [get_ports {sw[14]}]					
 #	set_property IOSTANDARD LVCMOS33 [get_ports {sw[14]}]
-set_property PACKAGE_PIN R2 [get_ports {SnsA}]					
-	set_property IOSTANDARD LVCMOS33 [get_ports {SnsA}]
+#set_property PACKAGE_PIN R2 [get_ports {SnsA}]					
+#	set_property IOSTANDARD LVCMOS33 [get_ports {SnsA}]
  
 
 # LEDs
@@ -123,20 +123,20 @@ set_property PACKAGE_PIN W4 [get_ports {Anode[3]}]
 
 ##Pmod Header JA
 ##Sch name = JA1
-set_property PACKAGE_PIN J1 [get_ports {Motor_Out}]					
-	set_property IOSTANDARD LVCMOS33 [get_ports {Motor_Out}]
+set_property PACKAGE_PIN J1 [get_ports {Motor_Out[0]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {Motor_Out[0]}]
 ##Sch name = JA2
-#set_property PACKAGE_PIN L2 [get_ports {Motor_Out[1]}]					
-#	set_property IOSTANDARD LVCMOS33 [get_ports {Motor_Out[1]}]
+set_property PACKAGE_PIN L2 [get_ports {Motor_Out[1]}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {Motor_Out[1]}]
 ##Sch name = JA3
-#set_property PACKAGE_PIN J2 [get_ports {JA[2]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[2]}]
+set_property PACKAGE_PIN J2 [get_ports {Over1}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {Over1}]
 ##Sch name = JA4
-#set_property PACKAGE_PIN G2 [get_ports {JA[3]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[3]}]
-##Sch name = JA7
-#set_property PACKAGE_PIN H1 [get_ports {JA[4]}]					
-	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[4]}]
+set_property PACKAGE_PIN G2 [get_ports {Under750}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {Under750}]
+#Sch name = JA7
+set_property PACKAGE_PIN H1 [get_ports {EnableA}]					
+	set_property IOSTANDARD LVCMOS33 [get_ports {EnableA}]
 ##Sch name = JA8
 #set_property PACKAGE_PIN K2 [get_ports {JA[5]}]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports {JA[5]}]

@@ -24,7 +24,7 @@
         E        - from TCR module
 */
 
-module PWM_Block(PWM_OUT, E, LED, SW, CLK_100MHz);
+module PWM_Block(PWM_OUT, E, LED, CLK_OUT, SW, CLK_100MHz);
     // Top module of this system. Connects I/O of each subsystem
 
     input CLK_100MHz;
@@ -33,7 +33,7 @@ module PWM_Block(PWM_OUT, E, LED, SW, CLK_100MHz);
     output E;
     output PWM_OUT;
     output [6:0] LED;
-   // output CLK_OUT;
+    output CLK_OUT;
     
     wire CLK;
     wire [6:0] CCR_internal;
