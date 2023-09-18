@@ -22,8 +22,8 @@
         SSEG [6:0]
         dp
         Anode [3:0]
-        Motor_Out [1:0] - 0 = Forward, 1 = Backward
-        LED [7:0] - LED[i] = 1 when sw[i] = 1    
+        Motor_Out [1:0] - 0: Forward, 1: Backward
+        LED [7:0] - LED[i] = sw[i]  
 
     Internal Signals
         E - from PWM.TCR
@@ -49,12 +49,19 @@ module top(
     wire PWM_OUT;
     wire SnsA;
     
-    PWM_Block PWM0(PWM_OUT, E, LED[6:0], CLK, sw[6:0], CLK_100MHz);
-    SSEG_Block SSEG0(seg, Anode, dp, sw[7], E, SnsA);
-    motorcontrol(Motor_Out[0], Motor_Out[1], SnsA, PWM_OUT, sw[7], Over1, Under750, CLK);
+    CLK_DIV      CLK0(CLK, CLK_100MHz);
+    PWM_Block    PWM0(PWM_OUT, E, sw[6:0], CLK);
+    SSEG_Block   SSEG0(seg, Anode, dp, sw[7], E, SnsA);
+    motorcontrol MC0(Motor_Out[0], Motor_Out[1], SnsA, PWM_OUT, sw[7], Over1, Under750, CLK);
     
+    assign LED[0] = SW[0];
+    assign LED[1] = SW[1];
+    assign LED[2] = SW[2];
+    assign LED[3] = SW[3];
+    assign LED[4] = SW[4];
+    assign LED[5] = SW[5];
+    assign LED[6] = SW[6];
     assign LED[7] = sw[7];  
-    assign CLK_OUT = CLK; 
     assign EnableA = 1; // motor always enabled
     
         

@@ -24,52 +24,30 @@
         E        - from TCR module
 */
 
-module PWM_Block(PWM_OUT, E, LED, CLK_OUT, SW, CLK_100MHz);
+module PWM_Block(PWM_OUT, E, SW, CLK);
     // Top module of this system. Connects I/O of each subsystem
 
-    input CLK_100MHz;
+    input CLK;
     input [6:0] SW;
 
     output E;
     output PWM_OUT;
-    output [6:0] LED;
-    output CLK_OUT;
     
-    wire CLK;
     wire [6:0] CCR_internal;
     wire [6:0] TCR_internal;
     wire       E_internal;
     
     // instantiate submodules
-    CLK_DIV CLK0(CLK, CLK_100MHz);
+    
     TCBlock TCR0(TCR_internal, E_internal, CLK);
     CCR CCR0(CCR_internal, SW, E_internal);
     PWM_OUT_Block PWM0(PWM_OUT, TCR_internal, CCR_internal, E_internal, CLK);
 
     assign E = E_internal;
-    assign LED[0] = SW[0];
-    assign LED[1] = SW[1];
-    assign LED[2] = SW[2];
-    assign LED[3] = SW[3];
-    assign LED[4] = SW[4];
-    assign LED[5] = SW[5];
-    assign LED[6] = SW[6];
-    assign CLK_OUT = CLK;
     
 endmodule
 
-module CLK_DIV(output CLK, input CLK_100MHz);
-    // divides 100 MHz source clock to 48.8 kHz
 
-    reg [10:0] clk_reg = 0;
-    
-    always@(posedge CLK_100MHz) begin
-        clk_reg <= clk_reg + 1;
-    end
-    
-    assign CLK = clk_reg[10];
-    
-endmodule
 
 module TCBlock(TCR, E, CLK);
     // Timer/Counter module - from TCR.v
