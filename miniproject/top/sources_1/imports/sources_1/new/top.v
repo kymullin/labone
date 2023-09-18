@@ -54,13 +54,13 @@ module top(
     SSEG_Block   SSEG0(seg, Anode, dp, sw[7], E, SnsA);
     motorcontrol MC0(Motor_Out[0], Motor_Out[1], SnsA, PWM_OUT, sw[7], Over1, Under750, CLK);
     
-    assign LED[0] = SW[0];
-    assign LED[1] = SW[1];
-    assign LED[2] = SW[2];
-    assign LED[3] = SW[3];
-    assign LED[4] = SW[4];
-    assign LED[5] = SW[5];
-    assign LED[6] = SW[6];
+    assign LED[0] = sw[0];
+    assign LED[1] = sw[1];
+    assign LED[2] = sw[2];
+    assign LED[3] = sw[3];
+    assign LED[4] = sw[4];
+    assign LED[5] = sw[5];
+    assign LED[6] = sw[6];
     assign LED[7] = sw[7];  
     assign EnableA = 1; // motor always enabled
     
