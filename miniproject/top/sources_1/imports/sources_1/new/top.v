@@ -31,7 +31,7 @@
         snsA    - from MotorControl
 */
 
-module top(
+module top( // assign inputs, outputs
     input [7:0] sw,
     input CLK_100MHz,
     input Over1, Under750,
@@ -49,11 +49,13 @@ module top(
     wire PWM_OUT;
     wire SnsA;
     
+    // module instantiation
     CLK_DIV      CLK0(CLK, CLK_100MHz);
     PWM_Block    PWM0(PWM_OUT, E, sw[6:0], CLK);
     SSEG_Block   SSEG0(seg, Anode, dp, sw[7], E, SnsA);
     motorcontrol MC0(Motor_Out[0], Motor_Out[1], SnsA, PWM_OUT, sw[7], Over1, Under750, CLK);
     
+    // LED assignment
     assign LED[0] = sw[0];
     assign LED[1] = sw[1];
     assign LED[2] = sw[2];
@@ -62,9 +64,7 @@ module top(
     assign LED[5] = sw[5];
     assign LED[6] = sw[6];
     assign LED[7] = sw[7];  
-    assign EnableA = 1; // motor always enabled
-    
-        
+    assign EnableA = 1; // motor always enabled  
 endmodule
 
 

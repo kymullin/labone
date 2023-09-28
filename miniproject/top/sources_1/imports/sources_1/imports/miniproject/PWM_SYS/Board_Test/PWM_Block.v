@@ -52,8 +52,8 @@ endmodule
 module TCBlock(TCR, E, CLK);
     // Timer/Counter module - from TCR.v
 
-    // Logic Hazard Found during integration. To resolve this issue, 
-    // E becomes a register
+    // Logic Hazard Found during integration. 
+    // To resolve this issue, E becomes a register
     input CLK;
 
     output reg E = 0;
