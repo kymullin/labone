@@ -6,15 +6,13 @@ module CLK_SYS(
     reg [17:0] CLK_DIV = 0;
     reg [16:0] ACLK_GEN = 0;
 
-    always @(CLK100MHz) begin
+    always @(posedge CLK100MHz) begin
         CLK_DIV <= CLK_DIV + 1;
-        case (ACLK_GEN)
-            49999: begin
-                ACLK_GEN <= 0;
-                ACLK <= ~ACLK;
-            end 
-            default: ACLK_GEN <= ACLK_GEN + 1;
-        endcase
+        ACLK_GEN <= ACLK_GEN +1;
+        if (ACLK_GEN == 49999) begin
+            ACLK <= ~ACLK;
+            ACLK_GEN <= 0;
+        end
     end
 
     assign MCLK = CLK_DIV[10];
