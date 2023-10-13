@@ -1,3 +1,31 @@
+/*-------------------------------------------------------------
+    Project Lab 1 - Main Project
+       Program by: Zachary Bonneau
+    Creation Date: 10/12/2023
+     Program Name: PWM_Generator.v
+    SubProgram of: PWM Generator
+  
+    Program Description:
+        PWM Generator constructs 2 PWM signals. The duty cycle for PWMx
+        is determined by Drivex, a control signal configured by the movement 
+        system. See the section in the project notebook concerning the PWM
+        generator for a detailed block diagram and further notes on each submodule
+
+    Inputs:
+        CLK - MCLK (48.8 kHz) used for PWM generator
+        [1:0] DriveA/B - control signals from movement system | sets duty cycle for PWM A/B
+    
+    Outputs:
+       motor A/B - PWM signal line for motor A/B
+
+    Internal Signals:
+        [6:0] TCR  - timer counter value used for reference in output
+        [6:0] CCRx - compare value used for reference in output
+        E          - starts next PWM cycle
+
+*///-----------------------------------------------------------
+
+
 module PWM_Generator(
     input CLK,
     input [1:0] DriveA, DriveB,
@@ -14,6 +42,12 @@ module PWM_Generator(
 
 endmodule
 
+//----------------------------------------
+/*  
+    Timer Counter (TC)
+        TC is a simple counter. It counts from 0-127, then overflows
+        E is a synchronization signal. It is true iff TC == 0
+*/
 module TimerCounter(
     input CLK,
     output reg [6:0] TCR = -5,
@@ -23,11 +57,24 @@ module TimerCounter(
         TCR = TCR+1;
         case (TCR)
             0: E <= 1;
-            default: E <= 0;
+            default: E <= 0; // all other cases, E = 0
         endcase
     end
 endmodule
 
+//----------------------------------------
+/*  
+    Comparex
+        Comparex is a simple register. It holds the value determined by 
+        Drivex (A/B). This value is compared against the TCR to determine 
+        when to deactivate the PWM signal.
+            Drivex  | CCRx
+            --------|-----
+                0   | 0
+                1   | 64 (50%)
+                2   | 96 (75%)
+                3   | 64 (50% - reserved for reverse motor)
+*/
 module Comparex(
     input [1:0] Drivex,
     input E,
@@ -42,6 +89,17 @@ module Comparex(
         endcase
     end
 endmodule
+
+//----------------------------------------
+/*  
+    Outputx
+        Outputx configures the PWM A/B signal according to a few simple rules:
+            turn on when  E = 1
+            turn off when R = 1
+            give precedence to R
+
+            R = 1 when TCR == CCRx
+*/
 
 module Outputx(
     input CLK,

@@ -1,0 +1,418 @@
+$date
+	Thu Oct 12 23:30:44 2023
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	100us
+$end
+$scope module testbench $end
+$var wire 2 ! DriveB [1:0] $end
+$var wire 2 " DriveA [1:0] $end
+$var reg 1 # ACLK $end
+$var reg 3 $ IPS [2:0] $end
+$scope module UUT $end
+$var wire 1 % C $end
+$var wire 1 # CLK $end
+$var wire 1 & L $end
+$var wire 1 ' R $end
+$var parameter 4 ( C90 $end
+$var parameter 4 ) CL $end
+$var parameter 4 * CR $end
+$var parameter 4 + CST $end
+$var parameter 4 , Cross $end
+$var parameter 4 - L90 $end
+$var parameter 4 . OFF $end
+$var parameter 4 / R90 $end
+$var parameter 4 0 ST $end
+$var parameter 3 1 track_CR $end
+$var parameter 3 2 track_Cross $end
+$var parameter 3 3 track_CrossT $end
+$var parameter 3 4 track_L90 $end
+$var parameter 3 5 track_LC $end
+$var parameter 3 6 track_None $end
+$var parameter 3 7 track_R90 $end
+$var parameter 3 8 track_ST $end
+$var reg 1 9 CrossNum $end
+$var reg 2 : DriveA [1:0] $end
+$var reg 2 ; DriveB [1:0] $end
+$var reg 4 < state [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+b0 8
+b11 7
+b10 6
+b100 5
+b110 4
+b111 3
+b101 2
+b1 1
+b1 0
+b101 /
+b0 .
+b11 -
+b110 ,
+b1001 +
+b100 *
+b10 )
+b1101 (
+$end
+#0
+$dumpvars
+b0 <
+b0 ;
+b0 :
+09
+0'
+0&
+0%
+b0 $
+0#
+b0 "
+b0 !
+$end
+#5
+b1 <
+1#
+#10
+0#
+#15
+b1 !
+b1 ;
+b1 "
+b1 :
+1#
+#20
+0#
+#25
+1#
+#30
+0#
+#35
+1#
+#40
+0#
+#45
+1#
+#50
+0#
+#55
+1#
+#60
+0#
+#65
+1#
+#70
+0#
+#75
+1#
+#80
+0#
+#85
+1#
+#90
+0#
+#95
+1#
+#100
+1&
+0#
+b100 $
+#105
+b10 <
+1#
+#110
+0#
+#115
+b10 !
+b10 ;
+1#
+#120
+0#
+#125
+1#
+#130
+0#
+#135
+1#
+#140
+0#
+#145
+1#
+#150
+0&
+0#
+b0 $
+#155
+b1 <
+1#
+#160
+0#
+#165
+b1 !
+b1 ;
+1#
+#170
+0#
+#175
+1#
+#180
+0#
+#185
+1#
+#190
+0#
+#195
+1#
+#200
+1'
+0#
+b1 $
+#205
+b100 <
+1#
+#210
+0#
+#215
+b10 "
+b10 :
+1#
+#220
+0#
+#225
+1#
+#230
+0#
+#235
+1#
+#240
+0#
+#245
+1#
+#250
+1%
+0#
+b11 $
+#255
+b101 <
+1#
+#260
+0#
+#265
+b0 !
+b0 ;
+1#
+#270
+0#
+#275
+1#
+#280
+0#
+#285
+1#
+#290
+0#
+#295
+1#
+#300
+0%
+0'
+0#
+b0 $
+#305
+b100 <
+1#
+#310
+0#
+#315
+b1 <
+b1 !
+b1 ;
+1#
+#320
+0#
+#325
+b1 "
+b1 :
+1#
+#330
+0#
+#335
+1#
+#340
+0#
+#345
+1#
+#350
+1&
+1'
+0#
+b101 $
+#355
+b110 <
+1#
+#360
+0#
+#365
+19
+b1101 <
+1#
+#370
+0#
+#375
+b0 !
+b0 ;
+b10 "
+b10 :
+1#
+#380
+0#
+#385
+1#
+#390
+0#
+#395
+1#
+#400
+1%
+0#
+b111 $
+#405
+b101 <
+1#
+#410
+0#
+#415
+1#
+#420
+0#
+#425
+1#
+#430
+0#
+#435
+1#
+#440
+0#
+#445
+1#
+#450
+0&
+0%
+0'
+0#
+b0 $
+#455
+b100 <
+1#
+#460
+0#
+#465
+b1 <
+b1 !
+b1 ;
+1#
+#470
+0#
+#475
+b1 "
+b1 :
+1#
+#480
+0#
+#485
+1#
+#490
+0#
+#495
+1#
+#500
+1&
+1%
+0#
+b110 $
+#505
+b10 <
+1#
+#510
+0#
+#515
+b11 <
+b10 !
+b10 ;
+1#
+#520
+0#
+#525
+b0 "
+b0 :
+1#
+#530
+0#
+#535
+1#
+#540
+0#
+#545
+1#
+#550
+0%
+1'
+0#
+b101 $
+#555
+b10 <
+1#
+#560
+0#
+#565
+b110 <
+b1 "
+b1 :
+1#
+#570
+0#
+#575
+09
+b1001 <
+1#
+#580
+0#
+#585
+b1 !
+b1 ;
+1#
+#590
+0#
+#595
+1#
+#600
+0&
+0'
+0#
+b0 $
+#605
+b1 <
+1#
+#610
+0#
+#615
+1#
+#620
+0#
+#625
+1#
+#630
+0#
+#635
+1#
+#640
+0#
+#645
+1#
+#650
+0#
