@@ -1,3 +1,31 @@
+/*-------------------------------------------------------------
+    Project Lab 1 - Main Project
+       Program by: Zachary Bonneau
+    Creation Date: 10/12/2023
+     Program Name: CLK_SYS.v
+    SubProgram of: CLK_System
+  
+    Program Description:
+        CLK_SYS generates 3 timing signals for the software solution.
+            - MCLK -      48.8 kHz - drives Motor PWM
+            - ACLK -         1 kHz - drives auxilary modules
+            - DisplayCLK - 381  Hz - Drives 7-seg display multiplexing
+
+    Inputs:
+        CLK100MHz - 100 MHz system clock from basys board
+    
+    Outputs:
+        ACLK
+        MCLK
+        Display CLK
+
+    Internal Signals:
+        CLK_DIV  - 18-bit register. Divides sys clock 
+        ACLK_GEN - 17-bit register. Counts to 49,999, then flips ACLK
+       
+
+*///-----------------------------------------------------------
+
 module CLK_SYS(
     input CLK100MHz,
     output reg ACLK = 0, 
