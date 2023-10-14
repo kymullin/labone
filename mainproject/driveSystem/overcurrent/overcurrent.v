@@ -21,7 +21,7 @@
 *///-----------------------------------------------------------
 
 module overcurrent(
-    input PWMx, Overx,OverBat,
+    input PWMx, Overx, OverBat,
     output Enx,
     output [1:0] Motorx
 );

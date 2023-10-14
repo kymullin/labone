@@ -33,6 +33,27 @@ module drive(
     output EnA, EnB,
     output [1:0] MotorA, MotorB;
 );
-    
+    wire [1:0] DriveA, DriveB;
+    wire PWMA, PWMB;
+
+    movement M0(
+        .CLK(ACLK), .L(L), .C(C), .R(R),
+        .DriveA(DriveA), .DriveB(DriveB)
+    );
+
+    PWM_Generator PWM0(
+        .CLK(MCLK), .DriveA(DriveA), .DriveB(DriveB),
+        .MotorA(PWMA), .MotorB(PWMB)
+    );
+
+    overcurrent overcurrentA(
+        .PWMx(PWMA), .Overx(OverA), .OverBat(OverBat),
+        .Enx(EnA), .Motorx(MotorA)
+    );
+
+    overcurrent overcurrentB(
+        .PWMx(PWMB), .Overx(OverB), .OverBat(OverBat),
+        .Enx(EnB), .Motorx(MotorB)
+    );
 
 endmodule
