@@ -24,14 +24,14 @@
         [1:0] MotorA, MotorB -> H-Bridge      
 
 *///-----------------------------------------------------------
-`include "mainproject\driveSystem\movementSystem\movement.v"
-`include "mainproject\driveSystem\overcurrent\overcurrent.v"
-`include "mainproject\driveSystem\PWM_Generator\PWM_Generator.v"
+//`include "mainproject\driveSystem\movementSystem\movement.v"
+//`include "mainproject\driveSystem\overcurrent\overcurrent.v"
+//`include "mainproject\driveSystem\PWM_Generator\PWM_Generator.v"
 
 module drive(
     input MCLK, ACLK, L, C, R, OverA, OverB, OverBat,
     output EnA, EnB,
-    output [1:0] MotorA, MotorB;
+    output [1:0] MotorA, MotorB
 );
     wire [1:0] DriveA, DriveB;
     wire PWMA, PWMB;
