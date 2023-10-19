@@ -31,18 +31,18 @@ module testbench;
     initial begin
         $dumpfile("move.vcd");
         $dumpvars(0,testbench);
-        IPS = 0; #100;      // OFF   -> Straight     (ST)
-        IPS = 3'b100; #50;  // ST    -> Curve Left   (CL)
-        IPS = 3'b000; #50;  // CL    -> ST
-        IPS = 3'b001; #50;  // ST    -> Curve Right  (CR)
-        IPS = 3'b011; #50;  // CR    -> Right 90 deg (R90)
-        IPS = 3'b000; #50;  // R90   -> CR   -> ST
-        IPS = 3'b101; #50;  // ST    -> Crossover    (Cross)
-        IPS = 3'b111; #50;  // Cross -> Cross 90     (C90 - Cross Register <= 1)
-        IPS = 3'b000; #50;  // C90   -> R90  -> CR   -> ST
-        IPS = 3'b110; #50;  // ST    -> CL   -> Left 90 (L90)
-        IPS = 3'b101; #50;  // L90   -> Cl   -> Cross   -> Cross Straight (CST - Cross Register <= 0)
-        IPS = 3'b000; #50;  // CST   -> ST
+        IPS = 0; #100;      // 0  ms     OFF   -> Straight     (ST)                                               
+        IPS = 3'b100; #50;  // 10 ms     ST    -> Curve Left   (CL)                                               
+        IPS = 3'b000; #50;  // 15 ms     CL    -> ST                                                               
+        IPS = 3'b001; #50;  // 20 ms     ST    -> Curve Right  (CR)
+        IPS = 3'b011; #50;  // 25 ms     CR    -> Right 90 deg (R90)
+        IPS = 3'b000; #50;  // 30 ms     R90   -> CR   -> ST
+        IPS = 3'b101; #50;  // 35 ms     ST    -> Crossover    (Cross)
+        IPS = 3'b111; #50;  // 40 ms     Cross -> Cross 90     (C90 - Cross Register <= 1)
+        IPS = 3'b000; #50;  // 45 ms     C90   -> R90  -> CR   -> ST
+        IPS = 3'b110; #50;  // 50 ms     ST    -> CL   -> Left 90 (L90)
+        IPS = 3'b101; #50;  // 55 ms     L90   -> Cl   -> Cross   -> Cross Straight (CST - Cross Register <= 0)
+        IPS = 3'b000; #50;  // 60 ms     CST   -> ST
         $finish;
     end
 endmodule

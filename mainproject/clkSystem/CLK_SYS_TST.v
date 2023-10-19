@@ -20,7 +20,7 @@ module testbench;
     wire MCLK, ACLK, DisplayCLK;
 
     always begin
-        #5; CLK100MHz = ~CLK100MHz;
+        #5; CLK100MHz = ~CLK100MHz; // 10 ns Rise-Rise period
     end
 
     CLK_SYS UUT(CLK100MHz, ACLK, MCLK, DisplayCLK);
