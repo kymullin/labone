@@ -13,6 +13,7 @@
         CLK - 100 MHz CLK
         CorrectStation - true when rover has found correct station
         digitalTemp [11:0] - 12-bit binary number from XADC
+        ready - conversion complete signal from XADC
 
     Outputs:
        decimalTemp [7:0] - 8-bit BCD number representing perceived temperature
@@ -30,6 +31,7 @@ module SSegDriver(
     input CLK,
     input CorrectStation,
     input [11:0] digitalTemp,
+    input ready,
     output reg [7:0] decimalTemp = 0,
     output display);
 
@@ -62,8 +64,18 @@ module SSegDriver(
                 
                 // 15 is "blank" code for 7 segment module
                 decimalTemp = 8'hFF; 
-                capture = digitalTemp;
-                state   <= (capture >= 68) ? DIVISION : OUTPUT;
+                case (ready)
+                    0: begin // prevent bad capture from XADC output
+                        capture <= 0;
+                        state   <= CAPTURE;
+                    end
+                    
+                    1: begin
+                        capture = digitalTemp;
+                        state   <= (capture >= 68) ? DIVISION : OUTPUT;
+                    end
+                endcase
+                
             end
 
             DIVISION: begin

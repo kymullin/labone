@@ -22,24 +22,55 @@
 
 module top(
     input CLK100MHZ,
-    output [7:0] JA,
+   // output [7:0] JA,
     input [15:0] sw,
-    output [15:0] LED
+    input vauxp6, vauxn6, vp_in, vn_in,
+    output [15:0] LED,
+    output [3:0] A,
+    output [7:0] sseg    
     );
     
     wire MCLK, ACLK, DisplayCLK;
+    wire [11:0] digitalTemp;
+    wire ready;
+    wire [7:0] decimalTemp;
+    wire display;
     
-    CLK_SYS UUT(.CLK100MHz(CLK100MHZ),
-                .MCLK(MCLK), .ACLK(ACLK), 
-                .DisplayCLK(DisplayCLK));           
-    drive drive0(.MCLK(MCLK), .ACLK(ACLK),
-                 .L(sw[2]), .C(sw[1]), .R(sw[0]),
-                 .OverA(sw[13]), .OverB(sw[14]), .OverBat(sw[15]),
-                 .EnA(JA[0]), .EnB(JA[4]),
-                 .MotorA(JA[2:1]), .MotorB(JA[6:5])
-                );
+    CLK_SYS UUT(
+        .CLK100MHz(CLK100MHZ),
+        .MCLK(MCLK), 
+        .ACLK(ACLK), 
+        .DisplayCLK(DisplayCLK)
+        );  
+        
+
+    XADC_Module U0(
+        .CLK(CLK100MHZ), 
+        .Vp(vauxp6), 
+        .Vn(vauxn6),
+        .vp_in(vp_in), 
+        .vn_in(vn_in),
+        .digitalTemp(digitalTemp), 
+        .ready(ready)
+        ); 
+        
+   SSegDriver SSEGDriver0(
+        .CLK(CLK100MHZ),
+        .CorrectStation(ACLK),
+        .digitalTemp(digitalTemp),
+        .ready(ready),
+        .decimalTemp(decimalTemp),
+        .display(display)
+        ); 
                 
-    assign JA[7] = 0;
-    assign JA[3] = 0;
+    SSEG_Display SSEG_Display0(
+        .displayCLK(DisplayCLK),
+        .display(display),
+        .decimalTemp(decimalTemp),
+        .A(A), .sseg(sseg)
+        );
+        
     assign LED[15:0] = sw[15:0];
+             
+    
 endmodule

@@ -54,7 +54,7 @@ module SSEG_Display(
     //----------------------------
     // digit Multiplexer
 
-    always@(ASEL) begin 
+    always@(ASEL, SSEG2, SSEG3) begin 
         // Multiplexer selects between digit configurations
         case (ASEL)
             0: sseg <= SSEG0;
@@ -94,7 +94,7 @@ module digitDriver(
             4:  SSEG <= 8'b10011001;
             5:  SSEG <= 8'b01001001;
             6:  SSEG <= 8'b01000001;
-            7:  SSEG <= 8'b01110011;
+            7:  SSEG <= 8'b00011111;
             8:  SSEG <= 8'b00000001;
             9:  SSEG <= 8'b00001001;
             10: SSEG <= 8'b01111110; // 10-14: error codes - num should be 0-9, 15 for blank
