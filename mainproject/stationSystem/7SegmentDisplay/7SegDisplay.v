@@ -16,7 +16,7 @@
     
     Outputs:
         A [3:0] - 4 anodes for 4 digits of 7-seg display
-        seg [7:0] - 8 bit configuration for 7 segments + decimal point (dp)      
+        sseg [7:0] - 8 bit configuration for 7 segments + decimal point (dp)      
 
     Internal Signals:
         ASEL [1:0] - Anode select register, chooses between A0 - A3
@@ -97,7 +97,8 @@ module digitDriver(
             7:  SSEG <= 8'b00011111;
             8:  SSEG <= 8'b00000001;
             9:  SSEG <= 8'b00001001;
-            10: SSEG <= 8'b01111110; // 10-14: error codes - num should be 0-9, 15 for blank
+        // 10-14: Error Codes (num: 0-9)
+            10: SSEG <= 8'b01111110; 
             11: SSEG <= 8'b10111110;
             12: SSEG <= 8'b11011110;
             13: SSEG <= 8'b11101110;
