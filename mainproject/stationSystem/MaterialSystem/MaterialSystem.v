@@ -29,12 +29,10 @@ module materialSystem(
     input trigger,
     input [11:0] digitalTemp,
     input ready,
-    output reg enableIR = 1, correctStation = 0, controlSignal = 0;
+    output reg enableIR = 1,
+    output reg correctStation = 0, 
+    output reg controlSignal = 0
 );
-
-    reg [3:0] state = IDLE;
-    reg [1:0] station = START;
-    reg [9:0] delay1 = 100; // 100 clk cycles = .1 sec
 
     localparam [3:0] IDLE    = 4'h0;
     localparam [3:0] DELAY1  = 4'h1;
@@ -48,6 +46,17 @@ module materialSystem(
     localparam [1:0] COLD   = 2'd2;
     localparam [1:0] FINISH = 2'd3;
 
+    localparam prd1 = 100; // .1 sec
+    localparam prd2 = 500; // .5 sec
+
+    localparam Threshold1 = 1200; // 17-18 C from XADC
+    localparam Threshold2 = 1900; // 27-28 C from XADC
+
+    reg [3:0] state = IDLE;
+    reg [1:0] station = START;
+    reg [6:0] delay1 = prd1; // 100 clk cycles = .1 sec
+    reg [8:0] delay2 = prd2; // 500 clk cycles = .5 sec
+
     always @(posedge CLK) begin
         case (state) 
             IDLE: begin
@@ -55,7 +64,7 @@ module materialSystem(
                 correctStation <= 0;
                 case (trigger)
                     0: begin
-                        EnableIR <= 1;
+                        enableIR <= 1;
                         state    <= IDLE;
                     end
 
@@ -67,27 +76,67 @@ module materialSystem(
             end
 
             DELAY1: begin
-                
+                if (delay1 == 0) begin
+                    delay1 <= prd1;
+                    state  <= READ;
+                end
+                else
+                    delay1 <= delay1 - 1;
             end
 
             READ: begin
+                if (ready == 1) begin // test XADC ready flag
+                    case (station)
+                        HOT: begin
+                            if (digitalTemp < Threshold2)
+                                state <= DELAY2; // wrong station
+                            else
+                                state <= CORRECT; // correct station (HOT)
+                        end
 
+                        COLD: begin
+                            if (digitalTemp > Threshold1)
+                                state <= DELAY2; // wrong station
+                            else
+                                state <= CORRECT; // correct station (COLD)
+                        end
+
+                        default: begin // START and FINISH are ambient
+                            if (digitalTemp < Threshold1 || digitalTemp > Threshold2)
+                                state <= DELAY2; // wrong station detected
+                            else
+                                state <= CORRECT; // correct station detected (ambient)
+                        end
+                    endcase
+                end
             end
 
             CORRECT: begin
-
+                controlSignal  <= 1;
+                correctStation <= 1;
+                // set station to next (start -> hot -> cold -> finish -> start)
+                station <= station + 1; 
+                state   <= DELAY2;
             end
 
             DELAY2: begin
+                if (delay2 == 300)
+                    enableIR = 1; // turn IR detector on after .2 sec
 
+                if (delay2 == 0) begin
+                    delay2 <= prd2;
+                    state  <= PICKUP;
+                end
+                else 
+                    delay2 <= delay2 - 1;
             end
 
-            PICKUP: begin
-
+            PICKUP: begin // wait for second pillar
+                state <= (trigger == 1) ? IDLE: PICKUP;
             end
 
             default: begin
-
+                state <= IDLE;
             end
         endcase
     end
