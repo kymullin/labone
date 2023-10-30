@@ -29,7 +29,7 @@ module XADC_Module(
     output ready
 );
 
-    reg [6:0] Address = 8'h16; // XA1 = VAUX6
+    reg [6:0] Address = 8'h16; // XA1 = VAUX6 - See Note 1
     wire enable;
     wire [15:0]data;
     
@@ -55,6 +55,11 @@ module XADC_Module(
         .drdy_out(ready)
           );   
 endmodule
+
+    // Note 1
+// Register Address from AMD Documentation
+// https://docs.xilinx.com/r/en-US/ug480_7Series_XADC/XADC-Register-Interface
+// Section: XADC Register Interace
 
 /* Module Instantiation
 XADC U0(.CLK(CLK100MHz), .Vp(vauxp6), .Vn(vauxn6),
