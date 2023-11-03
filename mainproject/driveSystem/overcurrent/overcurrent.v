@@ -16,16 +16,23 @@
     
     Outputs:
         Enx - enables motorX signals on H-Bridge
-        Motorx [1:0] - motor signals sent to H-Bridge      
+        Motorx - motor signals sent to H-Bridge     
+
+    Notes:
+        Revision 2.0 - Removed OverBat, as no active system used
+        Added UnderX, as motor OC uses comparators, not Schmitt Triggers
+        Enx is a state machine - reflect comparator use
+        Motorx is now 1 bit, in 2,4 are GND
 
 *///-----------------------------------------------------------
 
 module overcurrent(
-    input PWMx, Overx, OverBat,
-    output Enx,
-    output [1:0] Motorx
+    input PWMx, Overx, Underx,
+    output reg Enx = 1,
+    output Motorx
 );
-    assign Motorx[1] = 0;
-    assign Motorx[0] = PWMx;
-    assign Enx = ~Overx & ~OverBat;
+    assign Motorx = PWMx;
+    always @(Overx, Underx) begin
+        Enx <= ~Overx & Enx | ~Overx & Underx;
+    end
 endmodule

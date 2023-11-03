@@ -21,7 +21,10 @@
     
     Outputs:
         EnA, EnB -> H-Bridge
-        [1:0] MotorA, MotorB -> H-Bridge      
+        MotorA, MotorB -> H-Bridge     
+        
+    Notes:
+        Revision 2.0 - Removed OverBat, added UnderA/B to reflect hardware changes
 
 *///-----------------------------------------------------------
 //`include "mainproject\driveSystem\movementSystem\movement.v"
@@ -29,9 +32,9 @@
 //`include "mainproject\driveSystem\PWM_Generator\PWM_Generator.v"
 
 module drive(
-    input MCLK, ACLK, L, C, R, OverA, OverB, OverBat,
+    input MCLK, ACLK, L, C, R, OverA, UnderA, OverB, UnderB,
     output EnA, EnB,
-    output [1:0] MotorA, MotorB
+    output MotorA, MotorB
 );
     wire [1:0] DriveA, DriveB;
     wire PWMA, PWMB;
@@ -47,12 +50,12 @@ module drive(
     );
 
     overcurrent overcurrentA(
-        .PWMx(PWMA), .Overx(OverA), .OverBat(OverBat),
+        .PWMx(PWMA), .Overx(OverA), .Underx(UnderA),
         .Enx(EnA), .Motorx(MotorA)
     );
 
     overcurrent overcurrentB(
-        .PWMx(PWMB), .Overx(OverB), .OverBat(OverBat),
+        .PWMx(PWMB), .Overx(OverB), .Underx(UnderB),
         .Enx(EnB), .Motorx(MotorB)
     );
 
