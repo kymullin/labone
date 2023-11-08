@@ -27,12 +27,15 @@
 *///-----------------------------------------------------------
 
 module overcurrent(
-    input clk, PWMx, Overx, Underx,
-    output reg Enx = 1,
-    output Motorx
+    input clk, 
+    input [1:0] PWMx, 
+    input Overx, Underx,
+    //output reg Enx = 1,
+    output [1:0] Motorx
 );
-    assign Motorx = PWMx;
+    reg Enable = 1;
+    assign Motorx = (Enable == 1) ? PWMx : 0;
     always @(posedge clk) begin
-        Enx <= ~Overx & Enx | ~Overx & Underx;
+        Enable <= ~Overx & Enable | ~Overx & Underx;
     end
 endmodule

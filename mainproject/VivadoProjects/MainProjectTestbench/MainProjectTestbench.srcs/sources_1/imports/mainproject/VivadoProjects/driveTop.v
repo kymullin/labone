@@ -15,9 +15,9 @@
         JA6: OverB
         JA3: UnderA
         JA2: OverA
-        sw0: IPSR 
-        sw1: IPSC    
-        sw2: IPSL    
+        JB0: IPSR 
+        JB1: IPSC    
+        JB2: IPSL    
     
     Outputs:
        JA5: MotorB[0]
@@ -35,6 +35,7 @@
 module top(
     input CLK100MHZ,
     input JA7, JA6, JA3, JA2, 
+    input [2:0] JC,
     input [15:0] sw,
     output JA5, JA4, JA1, JA0, 
     output [15:0] LED
@@ -46,11 +47,12 @@ module top(
                 .MCLK(MCLK), .ACLK(ACLK), 
                 .DisplayCLK(DisplayCLK));           
     drive drive0(.MCLK(MCLK), .ACLK(ACLK),
-                 .L(sw[2]), .C(~sw[1]), .R(sw[0]), // invert sw1 to reflect hardware change to IPSC
+                 .L(JC[2]), .C(JC[1]), .R(JC[0]), // invert sw1 to reflect hardware change to IPSC
                  .OverA(JA2), .UnderA(JA3), .OverB(JA6), .UnderB(JA7),
-                 .EnA(JA0), .EnB(JA4),
-                 .MotorA(JA1), .MotorB(JA5)
+                 //.EnA(JA0), .EnB(JA4),
+                 .MotorA({JA1,JA0}), .MotorB({JA5,JA4})
                 );
                 
-    assign LED[15:0] = sw[15:0];
+    assign LED[12:0]  = sw[12:0];
+    assign LED[15:13] = JC[2:0];
 endmodule

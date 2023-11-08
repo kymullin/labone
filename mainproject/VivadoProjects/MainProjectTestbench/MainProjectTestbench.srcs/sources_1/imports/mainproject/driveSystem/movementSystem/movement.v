@@ -116,7 +116,7 @@ module movement(
             end
 
             L90: begin
-                DriveA <= 0;
+                DriveA <= 3; // reverse L motor
                 DriveB <= 2;
                 casex({L,C,R})
                     3'bX0X: state <= CL;
@@ -139,7 +139,7 @@ module movement(
 
             R90: begin
                 DriveA <= 2;
-                DriveB <= 0;
+                DriveB <= 3; // Reverse R motor
                 casex({L,C,R})
                     3'bX1X: state <= R90;
                     3'bX0X: state <= CR;
@@ -171,7 +171,7 @@ module movement(
 
             C90: begin
                 DriveA <= 2;
-                DriveB <= 0;
+                DriveB <= 3; // Reverse R motor
                 casex({L,C,R})
                     3'bX0X: state <= C90;
                     3'bX1X: state <= R90;
