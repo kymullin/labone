@@ -33,14 +33,14 @@
 
 module drive(
     input MCLK, ACLK, L, C, R, OverA, UnderA, OverB, UnderB,
-    output EnA, EnB,
-    output MotorA, MotorB
+    //output EnA, EnB,
+    output [1:0] MotorA, MotorB
 );
     wire [1:0] DriveA, DriveB;
-    wire PWMA, PWMB;
+    wire [1:0] PWMA, PWMB;
 
     movement M0(
-        .CLK(ACLK), .L(L), .C(C), .R(R),
+        .CLK(ACLK), .L(L), .C(~C), .R(R),
         .DriveA(DriveA), .DriveB(DriveB)
     );
 
@@ -49,14 +49,16 @@ module drive(
         .MotorA(PWMA), .MotorB(PWMB)
     );
 
-    overcurrent overcurrentA(
+    overcurrent overcurrentA( .clk(ACLK),
         .PWMx(PWMA), .Overx(OverA), .Underx(UnderA),
-        .Enx(EnA), .Motorx(MotorA)
+        //.Enx(EnA),
+         .Motorx(MotorA)
     );
 
-    overcurrent overcurrentB(
+    overcurrent overcurrentB( .clk(ACLK),
         .PWMx(PWMB), .Overx(OverB), .Underx(UnderB),
-        .Enx(EnB), .Motorx(MotorB)
+        //.Enx(EnB), 
+        .Motorx(MotorB)
     );
 
 endmodule

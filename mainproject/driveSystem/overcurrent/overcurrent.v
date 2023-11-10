@@ -24,15 +24,22 @@
         Enx is a state machine - reflect comparator use
         Motorx is now 1 bit, in 2,4 are GND
 
+        Revision 3.0
+        Requires Forward and backward spin. Remove EnA/B from PMod Pinout.
+        Solution, use Enx to stop Motorx.
+
 *///-----------------------------------------------------------
 
 module overcurrent(
-    input PWMx, Overx, Underx,
-    output reg Enx = 1,
-    output Motorx
+    input clk, 
+    input [1:0] PWMx, 
+    input Overx, Underx,
+    //output reg Enx = 1,
+    output [1:0] Motorx
 );
-    assign Motorx = PWMx;
-    always @(Overx, Underx) begin
-        Enx <= ~Overx & Enx | ~Overx & Underx;
+    reg Enable = 1;
+    assign Motorx = (Enable == 1) ? PWMx : 0;
+    always @(posedge clk) begin
+        Enable <= ~Overx & Enable | ~Overx & Underx;
     end
 endmodule

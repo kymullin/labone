@@ -19,7 +19,8 @@
     Outputs:
         EnableIR - supplies power to IR device
         Correct Station - triggers the 7-segment system
-        controlSignal - powers washer electromagnet       
+        controlEM - powers washer electromagnet
+        controlServo - controls servo position       
 
 *///-----------------------------------------------------------
 
@@ -31,7 +32,8 @@ module materialSystem(
     input ready,
     output reg enableIR = 1,
     output reg correctStation = 0, 
-    output reg controlSignal = 0
+    output reg controlEM = OFF,
+    output reg controlServo = UP
 );
 
     localparam [3:0] IDLE    = 4'h0;
@@ -39,12 +41,16 @@ module materialSystem(
     localparam [3:0] READ    = 4'h2;
     localparam [3:0] CORRECT = 4'h3;
     localparam [3:0] DELAY2  = 4'h4;
-    localparam [3:0] PICKUP  = 4'h5;
+    localparam [3:0] FINDPICKUP  = 4'h5;
+    localparam [3:0] PICKUP  = 4'h6;
 
     localparam [1:0] START  = 2'd0;
     localparam [1:0] HOT    = 2'd1;
     localparam [1:0] COLD   = 2'd2;
     localparam [1:0] FINISH = 2'd3;
+
+    localparam  UP = 0, DOWN = 1, // servo params
+                ON = 1, OFF  = 0; // EM params
 
     localparam prd1 = 100; // .1 sec
     localparam prd2 = 500; // .5 sec
@@ -60,7 +66,7 @@ module materialSystem(
     always @(posedge CLK) begin
         case (state) 
             IDLE: begin
-                controlSignal  <= 0;
+                controlServo   <= UP;
                 correctStation <= 0;
                 case (trigger)
                     0: begin
@@ -112,7 +118,7 @@ module materialSystem(
             end
 
             CORRECT: begin
-                controlSignal  <= 1;
+                controlEM  <= OFF;
                 correctStation <= 1;
                 // set station to next (start -> hot -> cold -> finish -> start)
                 station <= station + 1; 
@@ -125,14 +131,21 @@ module materialSystem(
 
                 if (delay2 == 0) begin
                     delay2 <= prd2;
-                    state  <= PICKUP;
+                    state  <= FINDPICKUP;
                 end
                 else 
                     delay2 <= delay2 - 1;
             end
 
-            PICKUP: begin // wait for second pillar
-                state <= (trigger == 1) ? IDLE: PICKUP;
+            FINDPICKUP: begin // wait for second pillar
+                state <= (trigger == 1) ? PICKUP: FINDPICKUP;
+            end
+
+            PICKUP: begin // bring servo down, grab washer, wait until rover leaves station
+                controlEM <= ON;
+                controlServo <= (correctStation == 1) ? DOWN : UP;
+
+                state <= (trigger == 1) ? PICKUP : IDLE;
             end
 
             default: begin
