@@ -38,8 +38,8 @@ module testbench();
         trigger = 0;
         #(PRD*605); // delay1 -> ... -> PICKUP -- w/ correct station
 
-        // ~600 ms: Correct Statino is found, 
-        //so bring servo down and collect new washer
+        // ~600 ms: Correct Station was found (100 ms), 
+        // bring servo down and collect new washer
         trigger = 1;
         #(PRD*10); // IDLE
         trigger = 0; // end of station
