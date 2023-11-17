@@ -21,43 +21,36 @@
 
 // module code here
 module WasherPWM(
-    input CLK, controlEM, controlServo,
-    output powerEM,
-    output powerServo
-    );
+    input CLK, controlServo,
+    output powerServo);
 
-    reg  [9:0] CCREM = 0, CCRServo = 0;
+    reg  [9:0] CCRServo = 0;
     wire [9:0] TCR;
     wire E;
 
-    localparam [9:0] EM_OFF    = 0,
-                     EM_ON     = 100, // placeholder
-                     ServoUP   = 50,  // placeholder (-90 deg)
-                     ServoDOWN = 100; // placeholder  (90 deg)
+    localparam [9:0] ServoUP   = 75,  // 0 deg
+                     ServoDOWN = 68;  // -15 deg 
 
 
     always @(posedge E) begin
-        case ({controlEM, controlServo})
-            2'b00: begin CCREM <= EM_OFF; CCRServo <= ServoDOWN; end
-            2'b01: begin CCREM <= EM_OFF; CCRServo <= ServoUP;   end
-            2'b10: begin CCREM <= EM_ON;  CCRServo <= ServoDOWN; end
-            2'b11: begin CCREM <= EM_ON;  CCRServo <= ServoUP;   end
+        case (controlServo)
+            0: CCRServo = ServoUP;
+            1: CCRServo = ServoDOWN;
         endcase
     end
 
     WasherTC TCR0(CLK, TCR, E);
-    WasherOut ElectromagnetOUT(CLK, E, TCR, CCREM,       powerEM);
     WasherOut ServoMotorOUT   (CLK, E, TCR, CCRServo, powerServo);
 
 endmodule
 
 module WasherTC(
     input CLK,
-    output reg [9:0] TCR = 0,
+    output reg [9:0] TCR = -1,
     output reg E = 0
  );
     always@(negedge CLK) begin
-        TCR = TCR+1;
+        TCR <= TCR+1;
         case (TCR)
             0: E <= 1;
             975: TCR <= 0;
@@ -82,7 +75,7 @@ module WasherOut(
     end
 
     always@(negedge CLK) begin
-        out <= ~R & (Motorx | E);
+        out <= ~R & (out | E);
     end
 
 endmodule

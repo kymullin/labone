@@ -90,37 +90,10 @@
   <FileSets Version="1" Minor="31">
     <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sources_1/imports/mainproject/driveSystem/drive.v">
+      <File Path="$PSRCDIR/sources_1/imports/mainproject/stationSystem/WasherPWM/WasherPWM.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../driveSystem/drive.v"/>
-          <Attr Name="ImportTime" Val="1699030014"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/mainproject/driveSystem/PWM_Generator/PWM_Generator.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../driveSystem/PWM_Generator/PWM_Generator.v"/>
-          <Attr Name="ImportTime" Val="1697231057"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/mainproject/driveSystem/overcurrent/overcurrent.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../driveSystem/overcurrent/overcurrent.v"/>
-          <Attr Name="ImportTime" Val="1699030071"/>
-          <Attr Name="UsedIn" Val="synthesis"/>
-          <Attr Name="UsedIn" Val="implementation"/>
-          <Attr Name="UsedIn" Val="simulation"/>
-        </FileInfo>
-      </File>
-      <File Path="$PSRCDIR/sources_1/imports/mainproject/driveSystem/movementSystem/movement.v">
-        <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../../driveSystem/movementSystem/movement.v"/>
-          <Attr Name="ImportTime" Val="1697231057"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../../stationSystem/WasherPWM/WasherPWM.v"/>
+          <Attr Name="ImportTime" Val="1698874885"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -135,10 +108,8 @@
           <Attr Name="UsedIn" Val="simulation"/>
         </FileInfo>
       </File>
-      <File Path="$PSRCDIR/sources_1/imports/mainproject/VivadoProjects/driveTop.v">
+      <File Path="$PSRCDIR/sources_1/new/WasherTop.v">
         <FileInfo>
-          <Attr Name="ImportPath" Val="$PPRDIR/../driveTop.v"/>
-          <Attr Name="ImportTime" Val="1699030013"/>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
           <Attr Name="UsedIn" Val="simulation"/>
@@ -146,7 +117,7 @@
       </File>
       <Config>
         <Option Name="DesignMode" Val="RTL"/>
-        <Option Name="TopModule" Val="top"/>
+        <Option Name="TopModule" Val="WasherTop"/>
       </Config>
     </FileSet>
     <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1" RelGenDir="$PGENDIR/constrs_1">

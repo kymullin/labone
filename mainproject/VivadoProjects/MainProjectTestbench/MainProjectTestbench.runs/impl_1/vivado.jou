@@ -3,12 +3,12 @@
 # SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Wed Nov  8 11:28:15 2023
-# Process ID: 8688
+# Start of session at: Tue Nov 14 19:00:20 2023
+# Process ID: 1780
 # Current directory: C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.runs/impl_1
-# Command line: vivado.exe -log top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top.tcl -notrace
-# Log file: C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.runs/impl_1/top.vdi
+# Command line: vivado.exe -log WasherTop.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source WasherTop.tcl -notrace
+# Log file: C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.runs/impl_1/WasherTop.vdi
 # Journal file: C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.runs/impl_1\vivado.jou
 # Running On: LAPTOP-K6G3ST0S, OS: Windows, CPU Frequency: 2592 MHz, CPU Physical cores: 6, Host memory: 34156 MB
 #-----------------------------------------------------------
-source top.tcl -notrace
+source WasherTop.tcl -notrace

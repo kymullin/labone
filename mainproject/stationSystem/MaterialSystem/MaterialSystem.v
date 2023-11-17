@@ -30,19 +30,17 @@ module materialSystem(
     input trigger,
     input [11:0] digitalTemp,
     input ready,
-    output reg enableIR = 1,
     output reg correctStation = 0, 
     output reg controlEM = OFF,
     output reg controlServo = UP
 );
 
-    localparam [3:0] IDLE    = 4'h0;
-    localparam [3:0] DELAY1  = 4'h1;
-    localparam [3:0] READ    = 4'h2;
-    localparam [3:0] CORRECT = 4'h3;
-    localparam [3:0] DELAY2  = 4'h4;
-    localparam [3:0] FINDPICKUP  = 4'h5;
-    localparam [3:0] PICKUP  = 4'h6;
+    localparam [3:0] IDLE           = 4'h0;
+    localparam [3:0] READ           = 4'h1;
+    localparam [3:0] CORRECT        = 4'h2;
+    localparam [3:0] LeaveDropoff   = 4'h3;
+    localparam [3:0] FINDPICKUP     = 4'h4;
+    localparam [3:0] PICKUP         = 4'h5;
 
     localparam [1:0] START  = 2'd0;
     localparam [1:0] HOT    = 2'd1;
@@ -52,16 +50,16 @@ module materialSystem(
     localparam  UP = 0, DOWN = 1, // servo params
                 ON = 1, OFF  = 0; // EM params
 
-    localparam prd1 = 100; // .1 sec
-    localparam prd2 = 500; // .5 sec
+    // localparam prd1 = 100; // .1 sec
+    // localparam prd2 = 500; // .5 sec
 
     localparam Threshold1 = 1200; // 17-18 C from XADC
     localparam Threshold2 = 1900; // 27-28 C from XADC
 
     reg [3:0] state = IDLE;
     reg [1:0] station = START;
-    reg [6:0] delay1 = prd1; // 100 clk cycles = .1 sec
-    reg [8:0] delay2 = prd2; // 500 clk cycles = .5 sec
+    // reg [6:0] delay1 = prd1; // 100 clk cycles = .1 sec
+    // reg [8:0] LeaveDropoff = prd2; // 500 clk cycles = .5 sec
 
     always @(posedge CLK) begin
         case (state) 
@@ -70,24 +68,13 @@ module materialSystem(
                 correctStation <= 0;
                 case (trigger)
                     0: begin
-                        enableIR <= 1;
-                        state    <= IDLE;
+                        state <= IDLE;
                     end
 
                     1: begin
-                        enableIR <= 0;
-                        state    <= DELAY1;
+                        state <= READ;
                     end
                 endcase
-            end
-
-            DELAY1: begin
-                if (delay1 == 0) begin
-                    delay1 <= prd1;
-                    state  <= READ;
-                end
-                else
-                    delay1 <= delay1 - 1;
             end
 
             READ: begin
@@ -95,21 +82,21 @@ module materialSystem(
                     case (station)
                         HOT: begin
                             if (digitalTemp < Threshold2)
-                                state <= DELAY2; // wrong station
+                                state <= LeaveDropoff; // wrong station
                             else
                                 state <= CORRECT; // correct station (HOT)
                         end
 
                         COLD: begin
                             if (digitalTemp > Threshold1)
-                                state <= DELAY2; // wrong station
+                                state <= LeaveDropoff; // wrong station
                             else
                                 state <= CORRECT; // correct station (COLD)
                         end
 
                         default: begin // START and FINISH are ambient
                             if (digitalTemp < Threshold1 || digitalTemp > Threshold2)
-                                state <= DELAY2; // wrong station detected
+                                state <= LeaveDropoff; // wrong station detected
                             else
                                 state <= CORRECT; // correct station detected (ambient)
                         end
@@ -122,23 +109,15 @@ module materialSystem(
                 correctStation <= 1;
                 // set station to next (start -> hot -> cold -> finish -> start)
                 station <= station + 1; 
-                state   <= DELAY2;
+                state   <= LeaveDropoff;
             end
 
-            DELAY2: begin
-                if (delay2 == 300)
-                    enableIR = 1; // turn IR detector on after .2 sec
-
-                if (delay2 == 0) begin
-                    delay2 <= prd2;
-                    state  <= FINDPICKUP;
-                end
-                else 
-                    delay2 <= delay2 - 1;
+            LeaveDropoff: begin
+                state = (trigger == 0) ? FINDPICKUP : LeaveDropoff;
             end
 
             FINDPICKUP: begin // wait for second pillar
-                state <= (trigger == 1) ? PICKUP: FINDPICKUP;
+                state <= (trigger == 1) ? PICKUP : FINDPICKUP;
             end
 
             PICKUP: begin // bring servo down, grab washer, wait until rover leaves station
