@@ -41,4 +41,4 @@ EAStep()
      fi
 }
 
-EAStep vivado -log WasherTop.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source WasherTop.tcl
+EAStep vivado -log StationTop.vds -m64 -product Vivado -mode batch -messageDb vivado.pb -notrace -source StationTop.tcl

@@ -293,3 +293,12 @@ set_property PACKAGE_PIN N1 [get_ports {vauxn15}]
 #set_property PACKAGE_PIN K19 [get_ports QspiCSn]					
 	#set_property IOSTANDARD LVCMOS33 [get_ports QspiCSn]
 
+set_property BITSTREAM.GENERAL.COMPRESS TRUE [current_design]
+set_property BITSTREAM.CONFIG.CONFIGRATE 33 [current_design]
+set_property BITSTREAM.CONFIG.UNUSEDPIN Pulldown [current_design]
+set_property CONFIG_MODE SPIx4 [current_design]
+
+set_property PULLDOWN TRUE [get_ports {JC0}]
+set_property PULLDOWN TRUE [get_ports {JC1}]
+set_property PULLDOWN TRUE [get_ports {JC2}]
+set_property PULLDOWN TRUE [get_ports {JC5}]

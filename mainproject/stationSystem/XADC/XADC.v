@@ -41,7 +41,6 @@ module XADC_Module(
         .den_in(enable),
         .di_in(0),
         .dwe_in(0), 
-        .reset_in(),
         .busy_out(),
         .vauxp6(Vp),
         .vauxn6(Vn),
@@ -52,7 +51,8 @@ module XADC_Module(
         .eoc_out(enable),
         .eos_out(),
         .channel_out(),
-        .drdy_out(ready)
+        .drdy_out(ready),
+        .reset_in()
           );   
 endmodule
 

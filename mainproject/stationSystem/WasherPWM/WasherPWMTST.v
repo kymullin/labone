@@ -6,14 +6,6 @@
     SubProgram of: 
   
     Program Description:
-    
-
-    Inputs:
-        
-    
-    Outputs:
-       
-
 *///-----------------------------------------------------------
 
 // directive calls

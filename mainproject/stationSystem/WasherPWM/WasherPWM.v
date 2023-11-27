@@ -10,11 +10,9 @@
 
     Inputs:
         MCLK - timing clock
-        controlEM    - drives electromagnet
         controlServo - drives servo motor
     
     Outputs:  
-        powerEM     - powers electromagnet via digital hardware switch
         powerServo  - powers servo motor
 
 *///-----------------------------------------------------------
