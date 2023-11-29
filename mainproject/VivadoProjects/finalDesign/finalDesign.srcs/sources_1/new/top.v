@@ -29,7 +29,8 @@ module top(
     output JA0, JA1, JA4, JA5,
     output JC3, JC4,
     output [7:0] seg,
-    output [3:0] an
+    output [3:0] an,
+    output [15:0] LED
     );
     
     wire MCLK, ACLK, DisplayCLK;
@@ -50,6 +51,9 @@ module top(
         .stationTrigger(JC5),
         .powerServo(JC4), .controlEM(JC3),
         .sseg(seg), .A(an)
-        );        
+        );       
+        
+        assign LED[15:13] = {JC0, JC1, JC2}; 
+        assign LED[12:0]  = 0;
         
 endmodule

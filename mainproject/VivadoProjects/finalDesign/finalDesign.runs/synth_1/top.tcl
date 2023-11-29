@@ -70,9 +70,8 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param checkpoint.writeSynthRtdsInDcp 1
-set_msg_config -id {Synth 8-256} -limit 10000
-set_msg_config -id {Synth 8-638} -limit 10000
+set_param chipscope.maxJobs 3
+set_param xicom.use_bs_reader 1
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tcpg236-1
 
@@ -102,7 +101,7 @@ read_verilog -library xil_defaultlib {
   C:/Users/Zack/labone/mainproject/stationSystem/station.v
   C:/Users/Zack/labone/mainproject/VivadoProjects/finalDesign/finalDesign.srcs/sources_1/new/top.v
 }
-read_ip -quiet c:/Users/Zack/labone/mainproject/VivadoProjects/finalDesign/finalDesign.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0.xci
+read_ip -quiet C:/Users/Zack/labone/mainproject/VivadoProjects/finalDesign/finalDesign.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0.xci
 set_property used_in_implementation false [get_files -all c:/Users/Zack/labone/mainproject/VivadoProjects/finalDesign/finalDesign.gen/sources_1/ip/xadc_wiz_0/xadc_wiz_0_ooc.xdc]
 set_property used_in_implementation false [get_files -all c:/Users/Zack/labone/mainproject/VivadoProjects/finalDesign/finalDesign.gen/sources_1/ip/xadc_wiz_0/xadc_wiz_0.xdc]
 
