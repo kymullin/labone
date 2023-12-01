@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.runs/synth_1/StationTop.tcl"
+  variable script "C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.runs/synth_1/top.tcl"
   variable category "vivado_synth"
 }
 
@@ -70,10 +70,8 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_param checkpoint.writeSynthRtdsInDcp 1
-set_param synth.incrementalSynthesisCache C:/Users/Zack/AppData/Roaming/Xilinx/Vivado/.Xil/Vivado-21360-DESKTOP-I08JEN1/incrSyn
-set_msg_config -id {Synth 8-256} -limit 10000
-set_msg_config -id {Synth 8-638} -limit 10000
+set_param chipscope.maxJobs 3
+set_param xicom.use_bs_reader 1
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a35tcpg236-1
 
@@ -90,22 +88,18 @@ set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
 read_verilog -library xil_defaultlib {
-  C:/Users/Zack/labone/mainproject/driveSystem/drive.v
-  C:/Users/Zack/labone/mainproject/driveSystem/PWM_Generator/PWM_Generator.v
-  C:/Users/Zack/labone/mainproject/driveSystem/overcurrent/overcurrent.v
   C:/Users/Zack/labone/mainproject/clkSystem/CLK_SYS.v
-  C:/Users/Zack/labone/mainproject/driveSystem/movementSystem/movement.v
-  C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.srcs/sources_1/new/StationTop.v
   C:/Users/Zack/labone/mainproject/stationSystem/station.v
   C:/Users/Zack/labone/mainproject/stationSystem/WasherPWM/WasherPWM.v
   C:/Users/Zack/labone/mainproject/stationSystem/7SegmentDisplay/7SegDisplay.v
   C:/Users/Zack/labone/mainproject/stationSystem/MaterialSystem/MaterialSystem.v
   C:/Users/Zack/labone/mainproject/stationSystem/7SegmentDriver/7SegDriver.v
   C:/Users/Zack/labone/mainproject/stationSystem/XADC/XADC.v
+  C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.srcs/sources_1/new/top.v
 }
-read_ip -quiet c:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0.xci
-set_property used_in_implementation false [get_files -all c:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.gen/sources_1/ip/xadc_wiz_0_1/xadc_wiz_0_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.gen/sources_1/ip/xadc_wiz_0_1/xadc_wiz_0.xdc]
+read_ip -quiet C:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.srcs/sources_1/ip/xadc_wiz_0/xadc_wiz_0.xci
+set_property used_in_implementation false [get_files -all c:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.gen/sources_1/ip/xadc_wiz_0/xadc_wiz_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/Zack/labone/mainproject/VivadoProjects/MainProjectTestbench/MainProjectTestbench.gen/sources_1/ip/xadc_wiz_0/xadc_wiz_0.xdc]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -125,7 +119,7 @@ read_checkpoint -auto_incremental -incremental C:/Users/Zack/labone/mainproject/
 close [open __synthesis_is_running__ w]
 
 OPTRACE "synth_design" START { }
-synth_design -top StationTop -part xc7a35tcpg236-1
+synth_design -top top -part xc7a35tcpg236-1
 OPTRACE "synth_design" END { }
 if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
  send_msg_id runtcl-6 info "Synthesis results are not added to the cache due to CRITICAL_WARNING"
@@ -135,10 +129,10 @@ if { [get_msg_config -count -severity {CRITICAL WARNING}] > 0 } {
 OPTRACE "write_checkpoint" START { CHECKPOINT }
 # disable binary constraint mode for synth run checkpoints
 set_param constraints.enableBinaryConstraints false
-write_checkpoint -force -noxdef StationTop.dcp
+write_checkpoint -force -noxdef top.dcp
 OPTRACE "write_checkpoint" END { }
 OPTRACE "synth reports" START { REPORT }
-create_report "synth_1_synth_report_utilization_0" "report_utilization -file StationTop_utilization_synth.rpt -pb StationTop_utilization_synth.pb"
+create_report "synth_1_synth_report_utilization_0" "report_utilization -file top_utilization_synth.rpt -pb top_utilization_synth.pb"
 OPTRACE "synth reports" END { }
 file delete __synthesis_is_running__
 close [open __synthesis_is_complete__ w]

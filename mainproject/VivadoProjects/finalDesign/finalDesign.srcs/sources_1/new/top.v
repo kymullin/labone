@@ -21,7 +21,7 @@
 
 
 module top(
-    input CLK100MHZ, 
+    input CLK100MHZ, sw,
     input JA2, JA3, JA6, JA7,
     input JC0, JC1, JC2, JC5,
     input vauxp6, vauxn6,
@@ -34,6 +34,7 @@ module top(
     );
     
     wire MCLK, ACLK, DisplayCLK;
+    wand [12:0] led;
     
     CLK_SYS CLK(CLK100MHZ, ACLK, MCLK, DisplayCLK);
     
@@ -54,6 +55,17 @@ module top(
         );       
         
         assign LED[15:13] = {JC0, JC1, JC2}; 
-        assign LED[12:0]  = 0;
+        assign led[12:9]  = Station.matSys.state;
+        assign led[12:9]  = {sw,sw,sw,sw};
+        
+        assign led[8:7] = Station.matSys.station;
+        assign led[8:7] = {sw,sw};
+        
+        assign led[6] = Station.correctStation;
+        assign led[6] = sw;
+        assign led[5:1] = 0;
+        assign led[0] = sw;
+        
+        assign LED[12:0] = led[12:0];
         
 endmodule

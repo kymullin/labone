@@ -31,8 +31,8 @@ module materialSystem(
     input [11:0] digitalTemp,
     input ready,
     output reg correctStation = 0, 
-    output reg controlEM = OFF,
-    output reg controlServo = UP
+    output reg controlEM = 0,
+    output reg controlServo = 0
 );
 
     localparam [3:0] IDLE           = 4'h0;

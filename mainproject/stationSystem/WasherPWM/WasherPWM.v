@@ -27,7 +27,7 @@ module WasherPWM(
     wire E;
 
     localparam [9:0] ServoUP   = 75,  // 0 deg
-                     ServoDOWN = 68;  // -15 deg 
+                     ServoDOWN = 82;  // 15 deg 
 
 
     always @(posedge E) begin
