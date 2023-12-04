@@ -63,7 +63,8 @@ module top(
         
         assign led[6] = Station.correctStation;
         assign led[6] = sw;
-        assign led[5:1] = 0;
+        assign led[5] = Drive.M0.CrossNum;
+        assign led[4:1] = 0;
         assign led[0] = sw;
         
         assign LED[12:0] = led[12:0];

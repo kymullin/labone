@@ -83,8 +83,8 @@ module Comparex(
     always@(posedge E) begin
         case (Drivex) 
             0: CCRx = 0;
-            1: CCRx = 64;
-            2: CCRx = 96;
+            1: CCRx = 96;
+            2: CCRx = 118;
             3: CCRx = 64;
         endcase
     end

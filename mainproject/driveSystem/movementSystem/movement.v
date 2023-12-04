@@ -163,9 +163,11 @@ module movement(
             CST: begin
                 DriveA <= 1;
                 DriveB <= 1;
-                case({L,C,R})
-                    track_ST:   state <= ST;
-                    default:    state <= CST;
+                casex({L,C,R})
+                    3'b1x0: state = ST;
+                    3'b0x1: state = ST;
+                    3'b0x0: state = ST;
+                    3'b1x1: state = CST;
                 endcase
             end
 
