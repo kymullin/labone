@@ -71,9 +71,9 @@ endmodule
             Drivex  | CCRx
             --------|-----
                 0   | 0
-                1   | 64 (50%)
-                2   | 96 (75%)
-                3   | 64 (50% - reserved for reverse motor)
+                1   | 96  (75%)
+                2   | 118 (92%)
+                3   | 64  (50% - reserved for reverse motor)
 */
 module Comparex(
     input [1:0] Drivex,
