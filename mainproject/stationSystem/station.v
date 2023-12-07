@@ -52,7 +52,7 @@ module stationSystem(
         .CLK(CLK100MHZ),
         .CorrectStation(correctStation),
         .digitalTemp(digitalTemp),
-        .ready(ready),
+        .ready(1),
         .decimalTemp(decimalTemp),
         .display(display)
         ); 
@@ -66,9 +66,9 @@ module stationSystem(
 
     materialSystem matSys(
         .CLK(ACLK),
-        .trigger(stationTrigger),
+        .trigger(~stationTrigger),
         .digitalTemp(digitalTemp),
-        .ready(ready),
+        .ready(1), // assume always good reading
         .correctStation(correctStation),
         .controlEM(controlEM),
         .controlServo(controlServo)

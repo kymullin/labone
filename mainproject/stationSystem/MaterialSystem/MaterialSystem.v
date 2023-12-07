@@ -31,16 +31,18 @@ module materialSystem(
     input [11:0] digitalTemp,
     input ready,
     output reg correctStation = 0, 
-    output reg controlEM = OFF,
-    output reg controlServo = UP
+    output reg controlEM = 0,
+    output reg controlServo = 0
 );
 
     localparam [3:0] IDLE           = 4'h0;
     localparam [3:0] READ           = 4'h1;
     localparam [3:0] CORRECT        = 4'h2;
-    localparam [3:0] LeaveDropoff   = 4'h3;
-    localparam [3:0] FINDPICKUP     = 4'h4;
-    localparam [3:0] PICKUP         = 4'h5;
+    localparam [3:0] Delay          = 4'h3;
+    localparam [3:0] LeaveDropoff   = 4'h4;
+    localparam [3:0] FINDPICKUP     = 4'h5;
+    localparam [3:0] PICKUP         = 4'h6;
+    localparam [3:0] leavePickup    = 4'h7;
 
     localparam [1:0] START  = 2'd0;
     localparam [1:0] HOT    = 2'd1;
@@ -50,18 +52,29 @@ module materialSystem(
     localparam  UP = 0, DOWN = 1, // servo params
                 ON = 1, OFF  = 0; // EM params
 
-    // localparam prd1 = 100; // .1 sec
+     localparam prd1 = 50; // .05 sec
     // localparam prd2 = 500; // .5 sec
 
     localparam Threshold1 = 1200; // 17-18 C from XADC
     localparam Threshold2 = 1900; // 27-28 C from XADC
 
+    reg [7:0] divideCLK = prd1; //Divide ACLK/100 = 10 Hz
+    reg internalCLK = 0; // divided CLK signal
     reg [3:0] state = IDLE;
     reg [1:0] station = START;
     // reg [6:0] delay1 = prd1; // 100 clk cycles = .1 sec
     // reg [8:0] LeaveDropoff = prd2; // 500 clk cycles = .5 sec
+    
+    always@(posedge CLK) begin
+        divideCLK = divideCLK - 1;
+        
+        if (divideCLK == 0) begin
+            divideCLK = prd1;
+            internalCLK = ~internalCLK;
+        end
+    end
 
-    always @(posedge CLK) begin
+    always @(posedge internalCLK) begin
         case (state) 
             IDLE: begin
                 controlServo   <= UP;
@@ -95,8 +108,10 @@ module materialSystem(
                         end
 
                         default: begin // START and FINISH are ambient
-                            if (digitalTemp < Threshold1 || digitalTemp > Threshold2)
-                                state <= LeaveDropoff; // wrong station detected
+                            if (digitalTemp < Threshold1 || digitalTemp > Threshold2) begin
+                                state <= Delay; // wrong station detected
+                                //delay <= prd1;
+                                end
                             else
                                 state <= CORRECT; // correct station detected (ambient)
                         end
@@ -110,7 +125,14 @@ module materialSystem(
                 // set station to next (start -> hot -> cold -> finish -> start)
                 station <= station + 1; 
                 state   <= LeaveDropoff;
+               // delay   <= prd1;
             end
+            
+//            Delay: begin
+//                delay = delay-1;
+                
+//                state = (delay == 0) ? LeaveDropoff : Delay;
+//            end
 
             LeaveDropoff: begin
                 state = (trigger == 0) ? FINDPICKUP : LeaveDropoff;
@@ -118,14 +140,20 @@ module materialSystem(
 
             FINDPICKUP: begin // wait for second pillar
                 state <= (trigger == 1) ? PICKUP : FINDPICKUP;
+                //delay = prd1;
             end
 
             PICKUP: begin // bring servo down, grab washer, wait until rover leaves station
                 controlEM <= ON;
                 controlServo <= (correctStation == 1) ? DOWN : UP;
-
-                state <= (trigger == 1) ? PICKUP : IDLE;
+                //delay = delay-1;
+                state <= (trigger == 1) ? PICKUP: IDLE;
+                //state = (delay == 0) ? leavePickup : PICKUP;
             end
+            
+//            leavePickup: begin
+//                state <= (trigger == 1) ? leavePickup: IDLE;
+//            end
 
             default: begin
                 state <= IDLE;
